@@ -8,26 +8,46 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class CoinMan extends ApplicationAdapter {
     SpriteBatch batch;
-    Texture img;
+    Texture background;
+    Texture[] man;
+    int manState = 0;
+    int pause = 0;
 
     @Override
     public void create () {
         batch = new SpriteBatch();
-        img = new Texture("badlogic.jpg");
+        background = new Texture("bg.png");
+
+        man = new Texture[4];
+        man[0] = new Texture("frame-1.png");
+        man[1] = new Texture("frame-2.png");
+        man[2] = new Texture("frame-3.png");
+        man[3] = new Texture("frame-4.png");
     }
 
     @Override
     public void render () {
-        Gdx.gl.glClearColor(1, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        batch.draw(img, 0, 0);
+
+        batch.draw(background,0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        if (pause < 8)
+            pause++;
+        else
+            pause = 0;
+
+        if (manState < 3)
+            manState++;
+        else
+            manState = 0;
+
+        batch.draw(man[manState], Gdx.graphics.getWidth() / 2 - man[0].getWidth() / 2,  Gdx.graphics.getHeight() / 2);
+
         batch.end();
     }
 
     @Override
     public void dispose () {
         batch.dispose();
-        img.dispose();
     }
 }
